@@ -53,15 +53,16 @@ contrasena = st.text_input("Contraseña", type="password")
 cliente_input = st.text_input("Cliente")
 
 if st.button("Iniciar sesión"):
+    # Validación de usuario
     if usuario in df_usuarios['usuario'].values:
-        clave_correcta = df_usuarios.loc[df_usuarios['usuario']==usuario, 'contrasena'].values[0]
+        clave_correcta = df_usuarios.loc[df_usuarios['usuario'] == usuario, 'contrasena'].values[0]
         if contrasena == clave_correcta:
             clientes_permitidos = df_usuarios.loc[df_usuarios['usuario']==usuario, 'cliente_permitido'].values
             if cliente_input in clientes_permitidos:
                 st.success(f"Login correcto. Cliente válido: {cliente_input}")
                 df_filtrado = df_clientes[df_clientes['NOMBRE DEL CLIENTE'] == cliente_input]
 
-                # Botón para Excel
+                # Exportar Excel
                 if st.button("Exportar Excel"):
                     buffer_excel = exportar_excel(df_filtrado)
                     st.download_button(
@@ -71,7 +72,7 @@ if st.button("Iniciar sesión"):
                         mime="application/vnd.ms-excel"
                     )
 
-                # Botón para PDF
+                # Exportar PDF
                 if st.button("Exportar PDF"):
                     buffer_pdf = exportar_pdf(df_filtrado)
                     st.download_button(
